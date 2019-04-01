@@ -2,6 +2,7 @@
 
 http://code.google.com/p/django-values/
 """
+from __future__ import absolute_import
 from decimal import Decimal
 try:
     from collections import OrderedDict as SortedDict
@@ -24,7 +25,7 @@ from livesettings.overrides import get_overrides
 from livesettings.utils import load_module, is_string_like, is_list_or_tuple
 import datetime
 import logging
-import signals
+from . import signals
 
 __all__ = ['BASE_GROUP', 'ConfigurationGroup', 'Value', 'BooleanValue', 'DecimalValue', 'DurationValue',
       'FloatValue', 'IntegerValue', 'ModuleValue', 'PercentValue', 'PositiveIntegerValue', 'SortedDotDict',
