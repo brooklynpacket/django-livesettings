@@ -375,7 +375,7 @@ class Value(object):
             try:
                 val = self.setting.value
 
-            except SettingNotSet, sns:
+            except SettingNotSet as sns:
                 is_setting_initializing = False
                 if self.use_default:
                     val = self.default
@@ -387,13 +387,13 @@ class Value(object):
                 else:
                     val = NOTSET
 
-            except AttributeError, ae:
+            except AttributeError as ae:
                 is_setting_initializing = False
                 log.error("Attribute error: %s", ae)
-                log.error("%s: Could not get _value of %s", self.key, self.setting)
+                log.exception("%s: Could not get _value of %s", self.key, self.setting)
                 raise(ae)
 
-            except Exception, e:
+            except Exception as e:
                 global _WARN
                 if is_setting_initializing and isinstance(e, DatabaseError) and str(e).find("livesettings_setting") > -1:
                     if not _WARN.has_key('livesettings_setting'):
@@ -410,7 +410,7 @@ class Value(object):
                     is_setting_initializing = False
                     import traceback
                     traceback.print_exc()
-                    log.error("Problem finding settings %s.%s, %s", self.group.key, self.key, e)
+                    log.exception("Problem finding settings %s.%s, %s", self.group.key, self.key, e)
                     raise SettingNotSet("Startup error, couldn't load %s.%s" % (self.group.key, self.key))
             else:
                 is_setting_initializing = False
@@ -525,7 +525,7 @@ class DecimalValue(Value):
 
         try:
             return Decimal(value)
-        except TypeError, te:
+        except TypeError as te:
             log.warning("Can't convert %s to Decimal for settings %s.%s", value, self.group.key, self.key)
             raise TypeError(te)
 
