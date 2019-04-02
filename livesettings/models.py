@@ -1,3 +1,6 @@
+from __future__ import unicode_literals
+from builtins import str
+from builtins import object
 from django.conf import settings
 from django.contrib.sites.models import Site
 from django.db import models, connection, DatabaseError
@@ -80,7 +83,7 @@ def find_setting(group, key, site=None):
 
     else:
         grp = overrides.get(group, None)
-        if grp and grp.has_key(key):
+        if grp and key in grp:
             val = grp[key]
             setting = ImmutableSetting(key=key, group=group, value=val)
             log.debug('Returning overridden: %s', setting)
@@ -139,7 +142,7 @@ class Setting(models.Model, CachedObjectMixin):
 
     objects = SettingManager()
 
-    def __nonzero__(self):
+    def __bool__(self):
         return self.id is not None
 
     def cache_key(self, *args, **kwargs):
@@ -159,7 +162,7 @@ class Setting(models.Model, CachedObjectMixin):
 
         self.cache_set()
 
-    class Meta:
+    class Meta(object):
         unique_together = ('site', 'group', 'key')
 
 
@@ -185,7 +188,7 @@ class LongSetting(models.Model, CachedObjectMixin):
 
     objects = LongSettingManager()
 
-    def __nonzero__(self):
+    def __bool__(self):
         return self.id is not None
 
     def cache_key(self, *args, **kwargs):
@@ -206,6 +209,6 @@ class LongSetting(models.Model, CachedObjectMixin):
         super(LongSetting, self).save(force_insert=force_insert, force_update=force_update)
         self.cache_set()
 
-    class Meta:
+    class Meta(object):
         unique_together = ('site', 'group', 'key')
 
