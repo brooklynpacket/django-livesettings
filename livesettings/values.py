@@ -20,6 +20,7 @@ try:
 except ImportError:
     from django.utils import simplejson as json
 
+from functools import total_ordering
 from django import forms
 from django.core.exceptions import ImproperlyConfigured
 from django.db import connection, DatabaseError
@@ -146,6 +147,7 @@ class SortedDotDict(object):
         return self._dict.viewvalues(*args, **kwargs)
 
 
+@total_ordering
 class ConfigurationGroup(SortedDotDict):
     """A simple wrapper for a group of configuration values"""
     def __init__(self, key, name, *args, **kwargs):
@@ -174,8 +176,8 @@ class ConfigurationGroup(SortedDotDict):
 
         super(ConfigurationGroup, self).__init__(*args, **kwargs)
 
-    def __cmp__(self, other):
-        return cmp((self.ordering, self.name), (other.ordering, other.name))
+    def __lt__(self, other):
+        return (self.ordering, self.name) < (other.ordering, other.name)
 
     def __eq__(self, other):
         return (type(self) == type(other)
@@ -201,8 +203,12 @@ class ConfigurationGroup(SortedDotDict):
         vals = list(super(ConfigurationGroup, self).values())
         return [v for v in vals if v.enabled()]
 
+    def __repr__(self):
+        return '{} {}'.format(self.ordering, self.name)
+
 BASE_GROUP = ConfigurationGroup('BASE', _('Base Settings'), ordering=0)
 
+@total_ordering
 class Value(object):
 
     creation_counter = 0
@@ -256,8 +262,8 @@ class Value(object):
         self.creation_counter = Value.creation_counter
         Value.creation_counter += 1
 
-    def __cmp__(self, other):
-        return cmp((self.ordering, self.description, self.creation_counter), (other.ordering, other.description, other.creation_counter))
+    def __lt__(self, other):
+        return (self.ordering, self.description, self.creation_counter) < (other.ordering, other.description, other.creation_counter)
 
     def __eq__(self, other):
         if type(self) == type(other):
