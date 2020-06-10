@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+from builtins import str
 from django import template
 from django.contrib.sites.models import Site
 from django.core import urlresolvers
@@ -33,7 +35,7 @@ def break_at(value,  chars=40):
     """Force spaces into long lines which don't have spaces"""
 
     chars = int(chars)
-    value = unicode(value)
+    value = str(value)
     if len(value) < chars:
         return value
     else:

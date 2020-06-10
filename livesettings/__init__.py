@@ -10,3 +10,4 @@ Appropriate:  Your google code for adwords.
 Inappropriate: The keyedcache timeout for the store.
 
 """
+from __future__ import unicode_literals

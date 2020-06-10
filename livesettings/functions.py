@@ -1,3 +1,6 @@
+from __future__ import unicode_literals
+from builtins import str
+from builtins import object
 from django.utils.translation import ugettext
 from livesettings import values
 from livesettings.models import SettingNotSet
@@ -39,7 +42,7 @@ class ConfigurationSettings(object):
         def __contains__(self, key):
             try:
                 key = self._resolve_key(key)
-                return self.settings.has_key(key)
+                return key in self.settings
             except:
                 return False
 
@@ -72,7 +75,7 @@ class ConfigurationSettings(object):
 
         def groups(self):
             """Return ordered list"""
-            return self.settings.values()
+            return list(self.settings.values())
 
         def has_config(self, group, key):
             if isinstance(group, values.ConfigurationGroup):
@@ -87,7 +90,7 @@ class ConfigurationSettings(object):
         def preregister_choice(self, group, key, choice):
             """Setup a choice for a group/key which hasn't been instantiated yet."""
             k = (group, key)
-            if self.prereg.has_key(k):
+            if k in self.prereg:
                 self.prereg[k].append(choice)
             else:
                 self.prereg[k] = [choice]
@@ -101,7 +104,7 @@ class ConfigurationSettings(object):
             valuekey = value.key
 
             k = (groupkey, valuekey)
-            if self.prereg.has_key(k):
+            if k in self.prereg:
                 for choice in self.prereg[k]:
                     value.add_choice(choice)
 
@@ -136,7 +139,7 @@ class ConfigurationSettings(object):
         return setattr(self.__instance, attr, value)
 
     def __unicode__(self):
-        return u"ConfigurationSettings: " + unicode(self.groups())
+        return u"ConfigurationSettings: " + str(self.groups())
 
 def config_exists(group, key):
     """Test to see if a setting has been registered"""

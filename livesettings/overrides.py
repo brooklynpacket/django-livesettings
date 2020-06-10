@@ -1,6 +1,7 @@
 """Allows livesettings to be "locked down" and no longer use the settings page or the database
 for settings retrieval.
 """
+from __future__ import unicode_literals
 
 from django.conf import settings as djangosettings
 from django.contrib.sites.models import Site
@@ -50,7 +51,7 @@ def get_overrides(siteid=-1):
             siteid = _safe_get_siteid(None)
         
         opts = djangosettings.LIVESETTINGS_OPTIONS
-        if opts.has_key(siteid):
+        if siteid in opts:
             opts = opts[siteid]
             overrides = (opts.get('DB', True), opts['SETTINGS'])
 

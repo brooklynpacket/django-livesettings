@@ -1,6 +1,9 @@
+from __future__ import unicode_literals
+from builtins import str
 import sys
 import types
 import os
+from functools import reduce
 
 def can_loop_over(maybe):
     """Test value to see if it is list like"""
@@ -12,7 +15,7 @@ def can_loop_over(maybe):
         return 1
 
 def is_list_or_tuple(maybe):
-    return isinstance(maybe, (types.TupleType, types.ListType))
+    return isinstance(maybe, (tuple, list))
 
 
 def is_scalar(maybe):
