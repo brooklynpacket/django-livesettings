@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 from builtins import str
 from django import template
 from django.contrib.sites.models import Site
-from django.core import urlresolvers
+from django.urls import reverse
 from livesettings.functions import config_value
 from livesettings.utils import url_join
 import logging
@@ -70,7 +70,7 @@ def admin_site_views(view):
     """Returns a formatted list of sites, rendering for view, if any"""
 
     if view:
-        path = urlresolvers.reverse(view)
+        path = reverse(view)
     else:
         path = None
 
