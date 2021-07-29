@@ -28,6 +28,6 @@ setup(
                    'Programming Language :: Python',
                    'Framework :: Django'],
     packages = find_packages(),
-    setup_requires=["setuptools_hg"],
+    setup_requires=[],
     include_package_data = True,
 )
