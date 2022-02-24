@@ -28,6 +28,6 @@ setup(
                    'Programming Language :: Python',
                    'Framework :: Django'],
     packages = find_packages(),
-    setup_requires=[],
+    install_requires=['Django>=3'],
     include_package_data = True,
 )
